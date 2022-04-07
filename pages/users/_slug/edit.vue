@@ -70,7 +70,7 @@ export default {
                 });
 
                 this.setSuccessMessage('Transaction successful!');
-                this.redirect({ path: `/users/${this.userId}` });
+                this.delayedRedirect({ path: `/users/${this.userId}` });
             } catch (e) {
                 this.formDisabled = false;
                 this.setErrorMessage(e);
@@ -83,7 +83,7 @@ export default {
             try {
                 await this.deleteUserById(this.userId);
                 this.setSuccessMessage('Delete successful!');
-                this.redirect({ path: '/users' });
+                this.delayedRedirect({ path: '/users' });
             } catch (e) {
                 this.formDisabled = false;
                 this.setErrorMessage(e);

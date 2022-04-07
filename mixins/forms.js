@@ -1,9 +1,14 @@
+/*  https://v2.vuejs.org/v2/guide/mixins.html?redirect=true
+*   Mixins contain reusable definitions across components
+*   Any methods or computed properties should only reference things defined
+*   inside the mixin itself
+*/
 export default {
     data() {
         return {
             formDisabled: true,
-            delayedRedirect: null,
-            redirectTimeout: 3000, // 3 Seconds
+            redirectTimeout: null,
+            redirectWait: 3000, // 3 Seconds
             msgs: {
                 success: '',
                 error: '',
@@ -25,10 +30,11 @@ export default {
         setSuccessMessage(msg) {
             this.msgs.success = msg;
         },
-        redirect({ path }) {
-            this.delayedRedirect = setTimeout(() => {
+        // TODO: This should likely be in a global mixin instead
+        delayedRedirect({ path }) {
+            this.redirectTimeout = setTimeout(() => {
                 this.$router.push({ path });
-            }, this.redirectTimeout);
+            }, this.redirectWait);
         },
     },
 };

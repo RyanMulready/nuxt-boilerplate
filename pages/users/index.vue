@@ -78,8 +78,10 @@ export default {
             fetchUserList: 'users/fetchUserList',
         }),
         async filterUserList() {
-            if (this.searchTerm) {
+            // If there is a search term use filtered user results
+            if (this.searchTerm.trim()) {
                 await this.searchUserList(this.searchTerm);
+            // If not use the full user result set
             } else {
                 await this.fetchUserList();
             }

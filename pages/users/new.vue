@@ -53,7 +53,7 @@ export default {
                 }
 
                 this.setSuccessMessage('Transaction successful!');
-                this.redirect({ path: `/users/${response.userId}` });
+                this.delayedRedirect({ path: `/users/${response.userId}` });
             } catch (e) {
                 this.formDisabled = false;
                 this.setErrorMessage(e);
