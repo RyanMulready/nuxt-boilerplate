@@ -1,6 +1,8 @@
 <template>
     <div id="app">
-        <Nuxt />
+        <b-container>
+            <Nuxt />
+        </b-container>
     </div>
 </template>
 <script>

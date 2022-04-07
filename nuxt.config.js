@@ -4,7 +4,7 @@ export default {
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        title: 'nuxt-boilerplate',
+        title: 'Profile Service POC',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -25,6 +25,7 @@ export default {
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
     plugins: [
+        { src: '@/plugins/api.js' },
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -74,6 +75,11 @@ export default {
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
+    },
+
+    // https://nuxtjs.org/docs/configuration-glossary/configuration-runtime-config/
+    publicRuntimeConfig: {
+        AWS_USER_PROFILE_API: process.env.AWS_USER_PROFILE_API,
     },
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
