@@ -25,6 +25,8 @@ export default {
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
     plugins: [
+        { src: '@/plugins/api.js' },
+        { src: '@/plugins/vuelidate.js' },
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -74,6 +76,10 @@ export default {
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
+    },
+
+    // https://nuxtjs.org/docs/configuration-glossary/configuration-runtime-config/
+    publicRuntimeConfig: {
     },
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
