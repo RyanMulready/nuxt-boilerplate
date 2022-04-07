@@ -8,12 +8,18 @@ import Vue from 'vue';
 const findUserIndex = (state, userId) => state.list.findIndex((user) => user.userId === userId);
 
 export const state = () => ({
+    listFilled: false,
     list: [],
+    filteredList: [],
 });
 
 export const mutations = {
+    setFilteredUserList: (state, data) => {
+        state.filteredList = data;
+    },
     setUserList: (state, data) => {
         state.list = data;
+        state.listFilled = true;
     },
     // TODO: state should be a reserved word
     setUserById: (vuexState, {
@@ -51,19 +57,28 @@ export const mutations = {
 
 export const actions = {
     // Get the entire user list from the API and set the state
-    async fetchUserList({ commit }) {
-        const users = await this.$api.users.list();
-        return commit('setUserList', users.data?.results || []);
+    async fetchUserList({ state, commit }) {
+        // Only fetch the entire user list once per session
+        // can't use .length since we insert single items on detail/edit pages
+        if (!state.listFilled) {
+            const users = await this.$api.users.list();
+            commit('setUserList', users.data?.results || []);
+        }
     },
     // in real world .filter on the existing state.list would be more appropriate
     async searchUserList({ commit }, city) {
         const users = await this.$api.users.search({ city });
-        commit('setUserList', users.data?.results || []);
+        commit('setFilteredUserList', users.data?.results || []);
     },
     // Get individual user details and set the state
-    async fetchUserById({ commit }, userId) {
-        const user = await this.$api.users.get(userId);
-        commit('setUserById', user || {});
+    async fetchUserById({ state, commit }, userId) {
+        const userIndex = findUserIndex(state, userId);
+
+        // Only fetch user info if it isn't already in the state
+        if (userIndex === -1) {
+            const user = await this.$api.users.get(userId);
+            commit('setUserById', user || {});
+        }
     },
     // Create a new user via API and update state on success
     async createUser({ commit }, {
@@ -75,6 +90,7 @@ export const actions = {
             city,
             state,
         });
+        // Grab the newly created userId from the response
         const { userId } = response;
 
         // Make sure there is a successful response before modifying our state

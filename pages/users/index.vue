@@ -21,7 +21,7 @@
             </b-col>
         </b-row>
         <b-table
-            :items="users"
+            :items="computedUsers"
             :fields="fields"
             hover
             striped>
@@ -67,7 +67,14 @@ export default {
     computed: {
         ...mapState({
             users: (state) => state.users.list,
+            filteredUsers: (state) => state.users.filteredList,
         }),
+        computedUsers() {
+            if (this.searchTerm.trim()) {
+                return this.filteredUsers;
+            }
+            return this.users;
+        },
     },
     async mounted() {
         await this.fetchUserList();
@@ -78,13 +85,7 @@ export default {
             fetchUserList: 'users/fetchUserList',
         }),
         async filterUserList() {
-            // If there is a search term use filtered user results
-            if (this.searchTerm.trim()) {
-                await this.searchUserList(this.searchTerm);
-            // If not use the full user result set
-            } else {
-                await this.fetchUserList();
-            }
+            await this.searchUserList(this.searchTerm);
         },
     },
 };
