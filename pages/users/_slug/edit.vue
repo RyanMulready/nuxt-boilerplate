@@ -27,19 +27,14 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import forms from '@/mixins/forms';
 
 export default {
     name: 'UserEdit',
+    mixins: [forms],
     data() {
         return {
             userId: this.$route.params.slug,
-            formDisabled: true,
-            delayedRedirect: null,
-            redirectTimeout: 3000, // 3 Seconds
-            msgs: {
-                success: '',
-                error: '',
-            },
         };
     },
     computed: {
@@ -53,9 +48,6 @@ export default {
     async mounted() {
         await this.fetchUserById(this.userId);
         this.formDisabled = false;
-    },
-    beforeDestroy() {
-        clearTimeout(this.redirectTimeout);
     },
     methods: {
         ...mapActions({
@@ -96,22 +88,6 @@ export default {
                 this.formDisabled = false;
                 this.setErrorMessage(e);
             }
-        },
-        clearMessages() {
-            this.formDisabled = false;
-            this.msgs.success = '';
-            this.msgs.error = '';
-        },
-        setErrorMessage(e) {
-            this.msgs.error = e.message || 'Unknown server error';
-        },
-        setSuccessMessage(msg) {
-            this.msgs.success = msg;
-        },
-        redirect({ path }) {
-            this.delayedRedirect = setTimeout(() => {
-                this.$router.push({ path });
-            }, this.redirectTimeout);
         },
     },
 

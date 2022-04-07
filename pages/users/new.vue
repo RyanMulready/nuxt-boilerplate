@@ -18,22 +18,17 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
+import forms from '@/mixins/forms';
 
 export default {
     name: 'UserNew',
+    // Mixin includes common form data and method definitions
+    mixins: [forms],
     data() {
         return {
+            // Overrides default mixin value
             formDisabled: false,
-            delayedRedirect: null,
-            redirectTimeout: 3000, // 3 Seconds
-            msgs: {
-                success: '',
-                error: '',
-            },
         };
-    },
-    beforeDestroy() {
-        clearTimeout(this.redirectTimeout);
     },
     methods: {
         ...mapActions({
@@ -63,22 +58,6 @@ export default {
                 this.formDisabled = false;
                 this.setErrorMessage(e);
             }
-        },
-        clearMessages() {
-            this.formDisabled = false;
-            this.msgs.success = '';
-            this.msgs.error = '';
-        },
-        setErrorMessage(e) {
-            this.msgs.error = e.message || 'Unknown server error';
-        },
-        setSuccessMessage(msg) {
-            this.msgs.success = msg;
-        },
-        redirect({ path }) {
-            this.delayedRedirect = setTimeout(() => {
-                this.$router.push({ path });
-            }, this.redirectTimeout);
         },
     },
 
