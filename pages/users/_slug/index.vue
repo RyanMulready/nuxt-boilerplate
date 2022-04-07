@@ -63,11 +63,7 @@ export default {
         },
     },
     async mounted() {
-        try {
-            await this.fetchUserById(this.userId);
-        // Handle 404 from API on bad userId slug
-        // eslint-disable-next-line no-empty
-        } catch (e) {}
+        await this.fetchUserById(this.userId);
     },
     methods: {
         ...mapActions({
