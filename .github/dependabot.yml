@@ -11,8 +11,6 @@ updates:
       versions: ["3.x"]
     - dependency-name: "node-sass"
       versions: ["5.x", "6.x", "7.x"]
-    - dependency-name: "node-sass"
-      versions: ["5.x", "6.x", "7.x"]
   open-pull-requests-limit: 10
   reviewers:
     - ryan mulready
